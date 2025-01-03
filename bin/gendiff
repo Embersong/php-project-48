@@ -26,3 +26,7 @@ Options:
 DOC;
 
 $args = Docopt::handle($doc, ['version' => '1.0']);
+
+$firsFilePath = $args['<firstFile>'];
+$secondFilePath = $args['<secondFile>'];
+$format = $args['--format'];
