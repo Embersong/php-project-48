@@ -1,0 +1,21 @@
+{
+    "name": "hexlet/code",
+    "bin": [
+        "bin/gendiff"
+    ],
+    "type": "library",
+    "authors": [
+        {
+            "name": "Ember songs",
+            "email": "evebay@mail.ru"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Hexlet\\Code\\": "src/"
+        }
+    },
+    "require": {
+        "docopt/docopt": "^1.0"
+    }
+}

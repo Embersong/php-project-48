@@ -1,0 +1,7 @@
+services:
+
+  php-fpm:
+    build: docker
+    working_dir: /app
+    volumes:
+      - '.:/app'
