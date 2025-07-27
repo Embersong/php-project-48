@@ -1,9 +1,10 @@
-### Hexlet tests and linter status:
+### Hexlet tests and Github Actions:
 [![Actions Status](https://github.com/Embersong/php-project-48/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Embersong/php-project-48/actions)
+[![Actions Status](https://github.com/Embersong/php-project-48/actions/workflows/main.yml/badge.svg)](https://github.com/Embersong/php-project-48/actions)
 
-### Github Actions and code Climate:
-<a href="https://codeclimate.com/github/Embersong/php-project-48/maintainability"><img src="https://api.codeclimate.com/v1/badges/e572053c353d8e2139d5/maintainability" /></a>
-
+### SonarQube status:
+<a href="https://codeclimate.com/github/Embersong/php-project-48/maintainability"></a>
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Embersong_php-project-48&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Embersong_php-project-48)
 ## Prerequisites
 
 * Linux, Macos, WSL
