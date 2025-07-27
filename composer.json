@@ -5,6 +5,7 @@
     ],
     "type": "library",
     "license": "MIT",
+    "description": "Hexlet project 2",
     "authors": [
         {
             "name": "Ember songs",
