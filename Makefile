@@ -6,3 +6,6 @@ lint:
 
 lint-fix:
 	composer exec --verbose phpcbf -- src tests
+
+test:
+	composer exec --verbose phpunit tests
