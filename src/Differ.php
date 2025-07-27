@@ -12,7 +12,8 @@ function genDiff(string $file1, string $file2, string $format = 'stylish'): stri
     return findDiff($contentFile1, $contentFile2);
 }
 
-function parseFile(string $file): array {
+function parseFile(string $file): array
+{
     if (!file_exists($file)) {
         throw new \Exception("Invalid file path: {$file}");
     }
@@ -27,7 +28,7 @@ function findDiff(array $file1, array $file2): string
         return $first <=> $second;
     });
 
-    $res =  array_map(function ($key) use ($file1, $file2) {
+    $res = array_map(function ($key) use ($file1, $file2) {
         $value1 = boolToString($file1[$key] ?? null);
         $value2 = boolToString($file2[$key] ?? null);
 
@@ -43,7 +44,7 @@ function findDiff(array $file1, array $file2): string
             return "  {$key}: {$value1}";
         }
 
-        return "- {$key}: {$value1}" . PHP_EOL .  "+ {$key}: {$value2}";
+        return "- {$key}: {$value1}" . PHP_EOL . "+ {$key}: {$value2}";
     }, $sortedArray);
     return implode(PHP_EOL, $res) . PHP_EOL;
 }
