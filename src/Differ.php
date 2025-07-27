@@ -12,8 +12,7 @@ function genDiff(string $file1, string $file2, string $format = 'stylish'): stri
     return findDiff($contentFile1, $contentFile2);
 }
 
-function parseFile(string $file): array
-{
+function parseFile(string $file): array {
     if (!file_exists($file)) {
         throw new \Exception("Invalid file path: {$file}");
     }
