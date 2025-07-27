@@ -3,8 +3,9 @@
 namespace Differ\Differ;
 
 use function Functional\sort;
+use \Exception;
 
-function genDiff(string $file1, string $file2, string $format = 'stylish'): string
+function genDiff(string $file1, string $file2): string
 {
     $contentFile1 = parseFile($file1);
     $contentFile2 = parseFile($file2);
@@ -15,7 +16,7 @@ function genDiff(string $file1, string $file2, string $format = 'stylish'): stri
 function parseFile(string $file): array
 {
     if (!file_exists($file)) {
-        throw new \Exception("Invalid file path: {$file}");
+        throw new Exception("Invalid file path: {$file}");
     }
     $content = file_get_contents($file);
     return json_decode($content, true);
