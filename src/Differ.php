@@ -39,22 +39,24 @@ function findDiff(array $file1, array $file2): string
             $value2 = boolToString($file2[$key] ?? null);
 
             if (!array_key_exists($key, $file1)) {
-                return "+ {$key}: {$value2}";
+                return "  + {$key}: {$value2}";
             }
 
             if (!array_key_exists($key, $file2)) {
-                return "- {$key}: {$value1}";
+                return "  - {$key}: {$value1}";
             }
 
             if ($value1 === $value2) {
-                return "  {$key}: {$value1}";
+                return "    {$key}: {$value1}";
             }
 
-            return "- {$key}: {$value1}" . PHP_EOL . "+ {$key}: {$value2}";
+            return "  - {$key}: {$value1}" . PHP_EOL . "  + {$key}: {$value2}";
         },
         $sortedArray
     );
-    return implode(PHP_EOL, $res) . PHP_EOL;
+    $result = implode("\n", $res);
+
+    return "{\n{$result}\n}";
 }
 
 function boolToString(mixed $string): mixed
