@@ -2,6 +2,7 @@
 
 namespace Differ\Differ;
 
+use Exception;
 use function Differ\Parsers\parse;
 use function Functional\sort;
 
@@ -19,7 +20,7 @@ function genDiff(string $file1, string $file2): string
 function parseFile(string $file): array
 {
     if (!file_exists($file)) {
-        throw new \Exception("Invalid file path: {$file}");
+        throw new Exception("Invalid file path: {$file}");
     }
     $type = pathinfo($file)['extension'] ?? '';
     $data = file_get_contents($file);
