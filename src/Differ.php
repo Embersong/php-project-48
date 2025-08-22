@@ -2,30 +2,38 @@
 
 namespace Differ\Differ;
 
-use Exception;
-
+use function Differ\Parsers\parse;
 use function Functional\sort;
 
 function genDiff(string $file1, string $file2): string
 {
-    $contentFile1 = parseFile($file1);
-    $contentFile2 = parseFile($file2);
+    ['type' => $type1, 'data' => $stringData1] = parseFile($file1);
+    ['type' => $type2, 'data' => $stringData2] = parseFile($file2);
 
-    return findDiff($contentFile1, $contentFile2);
+    $data1 = parse($type1, $stringData1);
+    $data2 = parse($type2, $stringData2);
+
+    return findDiff($data1, $data2);
 }
 
 function parseFile(string $file): array
 {
     if (!file_exists($file)) {
-        throw new Exception("Invalid file path: {$file}");
+        throw new \Exception("Invalid file path: {$file}");
     }
-    $content = file_get_contents($file);
-    return json_decode($content, true);
+    $type = pathinfo($file)['extension'] ?? '';
+    $data = file_get_contents($file);
+    return ['type' => $type, 'data' => $data];
 }
 
-function findDiff(array $file1, array $file2): string
+function findDiff(object $file1, object $file2): string
 {
-    $uniqueKeys = array_unique(array_merge(array_keys($file1), array_keys($file2)));
+    $uniqueKeys = array_unique(
+        array_merge(
+            array_keys(get_object_vars($file1)),
+            array_keys(get_object_vars($file2))
+        )
+    );
     $sortedArray = sort(
         $uniqueKeys,
         function ($first, $second) {
@@ -34,15 +42,15 @@ function findDiff(array $file1, array $file2): string
     );
 
     $res = array_map(
-        function ($key) use ($file1, $file2) {
-            $value1 = boolToString($file1[$key] ?? null);
-            $value2 = boolToString($file2[$key] ?? null);
+        function (string $key) use ($file1, $file2) {
+            $value1 = boolToString($file1->$key ?? null);
+            $value2 = boolToString($file2->$key ?? null);
 
-            if (!array_key_exists($key, $file1)) {
+            if (!property_exists($file1, $key)) {
                 return "  + {$key}: {$value2}";
             }
 
-            if (!array_key_exists($key, $file2)) {
+            if (!property_exists($file2, $key)) {
                 return "  - {$key}: {$value1}";
             }
 

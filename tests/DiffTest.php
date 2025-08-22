@@ -8,7 +8,7 @@ use function Differ\Differ\genDiff;
 
 class DiffTest extends TestCase
 {
-    public function testDiff()
+    public function testJson()
     {
         $first = __DIR__ . "/fixtures/file1.json";
         $second = __DIR__ . "/fixtures/file2.json";
@@ -16,5 +16,11 @@ class DiffTest extends TestCase
         $this->assertEquals($expected, genDiff($first, $second));
     }
 
-
+    public function testYaml()
+    {
+        $first = __DIR__ . "/fixtures/file1.yaml";
+        $second = __DIR__ . "/fixtures/file2.yaml";
+        $expected = file_get_contents(__DIR__ . "/fixtures/expected-stylish.txt");
+        $this->assertEquals($expected, genDiff($first, $second));
+    }
 }
