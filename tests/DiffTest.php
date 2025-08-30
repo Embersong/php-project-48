@@ -23,4 +23,12 @@ class DiffTest extends TestCase
         $expected = file_get_contents(__DIR__ . "/fixtures/expected-stylish.txt");
         $this->assertEquals($expected, genDiff($first, $second));
     }
+    
+    public function testPlain()
+    {
+        $first = __DIR__ . "/fixtures/file1.yaml";
+        $second = __DIR__ . "/fixtures/file2.yaml";
+        $expected = file_get_contents(__DIR__ . "/fixtures/expected-plain.txt");
+        $this->assertEquals($expected, genDiff($first, $second, 'plain'));
+    }
 }

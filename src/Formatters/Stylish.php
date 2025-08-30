@@ -2,20 +2,21 @@
 
 namespace Differ\Formatters\Stylish;
 
-use function Functional\pick;
+use function Funct\Collection\get;
 
-function render(array $tree, string $format): string
+function render(array $tree): string
 {
     return iter($tree);
 }
 
+//рекурсивное преобразование каждой ноды массива абстрактных различий в текстовое представление в Stylish
 function iter(array $node, int $depth = 1): string
 {
-    $children = pick($node, 'children');
+    $children = get($node, 'children');
     $indent = buildIndent($depth);
-    $value1 = pick($node, 'value1');
-    $value2 = pick($node, 'value2');
-    $value = pick($node, 'value');
+    $value1 = get($node, 'value1');
+    $value2 = get($node, 'value2');
+    $value = get($node, 'value');
     $formattedValue2 = stringify($value2, $depth);
     $formattedValue1 = stringify($value1, $depth);
     $formattedValue = stringify($value, $depth);
@@ -54,7 +55,7 @@ function iter(array $node, int $depth = 1): string
 
 function stringify(mixed $value, int $depth): string
 {
-    // guard expressions
+
     if (is_bool($value)) {
         return $value ? 'true' : 'false';
     }

@@ -29,4 +29,6 @@ gendiff -h
 ##### Demo №2:
 [![asciicast](https://asciinema.org/a/Gy8Mo70nZe55JMcHFxaWJpR9Z.svg)](https://asciinema.org/a/Gy8Mo70nZe55JMcHFxaWJpR9Z)
 ##### Demo №3:
-[![asciicast](https://asciinema.org/a/GHf2siud3INsNdDnLDs0X7tgR.svg)](https://asciinema.org/a/GHf2siud3INsNdDnLDs0X7tgR)
+[![asciicast](https://asciinema.org/a/GHf2siud3INsNdDnLDs0X7tgR.svg)](https://asciinema.org/a/GHf2##### 
+Demo №4:
+[![asciicast](https://asciinema.org/a/uvswVF0oKDikDdq1KJ4XCqdoC.svg)](https://asciinema.org/a/uvswVF0oKDikDdq1KJ4XCqdoC)

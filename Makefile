@@ -20,3 +20,7 @@ run1:
 	php ./bin/gendiff ./tests/fixtures/file1.yaml ./tests/fixtures/file2.yaml
 run2:
 	php ./bin/gendiff ./tests/fixtures/file1.json ./tests/fixtures/file2.json
+run3:
+	php ./bin/gendiff ./tests/fixtures/file1.json ./tests/fixtures/file2.json --format plain
+run4:
+	php ./bin/gendiff ./tests/fixtures/file1.yaml ./tests/fixtures/file2.yaml --format plain

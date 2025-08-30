@@ -4,8 +4,8 @@ namespace Differ\Differ;
 
 use Exception;
 
-use function Differ\Formatters\Stylish\render;
 use function Differ\Parsers\parse;
+use function Differ\Formatters\format;
 use function Functional\sort;
 
 /**
@@ -21,9 +21,12 @@ function genDiff(string $file1, string $file2, string $format = 'stylish'): stri
     $data1 = parse($type1, $stringData1);
     $data2 = parse($type2, $stringData2);
 
-    //return findDiff($data1, $data2);
+    //Получаем абстрактное дерево различий
     $diffTree = findDiff($data1, $data2);
-    return render(
+
+    //Вызываем render формирующий по дереву текстовое представление
+    //Достраиваем структуру добавляя ключ корня дерева
+    return format(
         [
             'type' => 'root',
             'children' => $diffTree,
@@ -70,8 +73,8 @@ function findDiff(object $file1, object $file2): array
     //По $key извлекаем из stdObject значения для сравнения
     $res = array_map(
         function (string $key) use ($file1, $file2) {
-            $value1 = boolToString($file1->$key ?? null);
-            $value2 = boolToString($file2->$key ?? null);
+            $value1 = $file1->$key ?? null;
+            $value2 = $file2->$key ?? null;
 
             //Сравниваем значения
             //Если во втором файле нет такого свойства
@@ -123,13 +126,4 @@ function findDiff(object $file1, object $file2): array
     );
 
     return $res;
-}
-
-function boolToString(mixed $string): mixed
-{
-    if (is_bool($string)) {
-        return $string ? 'true' : 'false';
-    }
-
-    return $string;
 }
