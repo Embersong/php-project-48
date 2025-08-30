@@ -15,7 +15,6 @@ function getFixtureFullPath($fixtureName): string
 
 class DiffTest extends TestCase
 {
-
     #[DataProvider('formatProvider')]
     public function testDefault($format): void
     {

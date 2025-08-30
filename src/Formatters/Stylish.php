@@ -2,6 +2,8 @@
 
 namespace Differ\Formatters\Stylish;
 
+use Exception;
+
 use function Funct\Collection\get;
 
 function render(array $tree): string
@@ -49,7 +51,7 @@ function iter(array $node, int $depth = 1): string
             $result = implode("\n", $mapped);
             return "{$indent}  {$node['key']}: {\n{$result}\n{$indent}  }";
         default:
-            throw new \Exception("Unknown type: {$node['type']}");
+            throw new Exception("Unknown type: {$node['type']}");
     }
 }
 
@@ -83,11 +85,10 @@ function stringify(mixed $value, int $depth): string
         $keys
     );
     $string = implode("\n", $data);
-    $result = "{\n{$string}\n{$closeBracketIndent}  }";
-    return $result;
+    return "{\n{$string}\n{$closeBracketIndent}  }";
 }
 
-function buildIndent(int $depth, int $spacesCount = 4): string
+function buildIndent(int $depth): string
 {
     return str_repeat(' ', $depth * 4 - 2);
 }
