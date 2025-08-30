@@ -24,3 +24,7 @@ run3:
 	php ./bin/gendiff ./tests/fixtures/file1.json ./tests/fixtures/file2.json --format plain
 run4:
 	php ./bin/gendiff ./tests/fixtures/file1.yaml ./tests/fixtures/file2.yaml --format plain
+run5:
+	php ./bin/gendiff ./tests/fixtures/file1.yaml ./tests/fixtures/file2.yaml --format json
+run6:
+	php ./bin/gendiff ./tests/fixtures/file1.json ./tests/fixtures/file2.json --format json

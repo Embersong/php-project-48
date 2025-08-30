@@ -2,33 +2,68 @@
 
 namespace Converter\Phpunit\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function Differ\Differ\genDiff;
 
+function getFixtureFullPath($fixtureName): string
+{
+    $parts = [__DIR__, 'fixtures', $fixtureName];
+    return realpath(implode('/', $parts));
+}
+
 class DiffTest extends TestCase
 {
-    public function testJson()
+
+    #[DataProvider('formatProvider')]
+    public function testDefault($format): void
     {
-        $first = __DIR__ . "/fixtures/file1.json";
-        $second = __DIR__ . "/fixtures/file2.json";
-        $expected = file_get_contents(__DIR__ . "/fixtures/expected-stylish.txt");
-        $this->assertEquals($expected, genDiff($first, $second));
+        $filepath1 = getFixtureFullPath("file1.{$format}");
+        $filepath2 = getFixtureFullPath("file2.{$format}");
+
+        $pathToResult = getFixtureFullPath('expected-stylish.txt');
+        $this->assertStringEqualsFile($pathToResult, genDiff($filepath1, $filepath2));
     }
 
-    public function testYaml()
+    #[DataProvider('formatProvider')]
+    public function testStylish($format): void
     {
-        $first = __DIR__ . "/fixtures/file1.yaml";
-        $second = __DIR__ . "/fixtures/file2.yaml";
-        $expected = file_get_contents(__DIR__ . "/fixtures/expected-stylish.txt");
-        $this->assertEquals($expected, genDiff($first, $second));
+        $filepath1 = getFixtureFullPath("file1.{$format}");
+        $filepath2 = getFixtureFullPath("file2.{$format}");
+
+        $pathToResult = getFixtureFullPath('expected-stylish.txt');
+        $this->assertStringEqualsFile($pathToResult, genDiff($filepath1, $filepath2, 'stylish'));
     }
-    
-    public function testPlain()
+
+    #[DataProvider('formatProvider')]
+    public function testPlain($format): void
     {
-        $first = __DIR__ . "/fixtures/file1.yaml";
-        $second = __DIR__ . "/fixtures/file2.yaml";
-        $expected = file_get_contents(__DIR__ . "/fixtures/expected-plain.txt");
-        $this->assertEquals($expected, genDiff($first, $second, 'plain'));
+        $filepath1 = getFixtureFullPath("file1.{$format}");
+        $filepath2 = getFixtureFullPath("file2.{$format}");
+
+        $pathToResult = getFixtureFullPath('expected-plain.txt');
+        $this->assertStringEqualsFile($pathToResult, genDiff($filepath1, $filepath2, 'plain'));
+    }
+
+    #[DataProvider('formatProvider')]
+    public function testJson($format): void
+    {
+        $filepath1 = getFixtureFullPath("file1.{$format}");
+        $filepath2 = getFixtureFullPath("file2.{$format}");
+
+        $pathToResult = getFixtureFullPath('expected-json.txt');
+        $this->assertStringEqualsFile($pathToResult, genDiff($filepath1, $filepath2, 'json'));
+        //$data = genDiff($filepath1, $filepath2, 'json');
+        //json_decode($data, null, 512, JSON_THROW_ON_ERROR);
+        //$this->assertTrue(true);
+    }
+
+    public static function formatProvider(): array
+    {
+        return [
+            ['json'],
+            ['yaml']
+        ];
     }
 }
