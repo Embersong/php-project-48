@@ -15,3 +15,8 @@ test-coverage:
 
 test-coverage-text:
 	XDEBUG_MODE=coverage composer exec --verbose phpunit tests -- --coverage-text
+
+run1:
+	php ./bin/gendiff ./tests/fixtures/file1.yaml ./tests/fixtures/file2.yaml
+run2:
+	php ./bin/gendiff ./tests/fixtures/file1.json ./tests/fixtures/file2.json
