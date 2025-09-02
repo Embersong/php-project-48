@@ -5,7 +5,6 @@ namespace Differ\Parsers;
 use Exception;
 use Symfony\Component\Yaml\Yaml;
 
-//В завасимости от типа файла преобразуем файл в объект с данными
 function parse(string $type, string $data): object
 {
     return match ($type) {

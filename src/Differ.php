@@ -11,21 +11,15 @@ use function Functional\sort;
 /**
  * @throws Exception
  */
-function genDiff(string $file1, string $file2, string $format = 'stylish'): string
+function genDiff(string $path1, string $path2, string $format = 'stylish'): string
 {
-    //Получили данные и тип из файлов в виде текста
-    ['type' => $type1, 'data' => $stringData1] = parseFile($file1);
-    ['type' => $type2, 'data' => $stringData2] = parseFile($file2);
+    ['type' => $type1, 'data' => $rawData1] = getFileData($path1);
+    ['type' => $type2, 'data' => $rawData2] = getFileData($path2);
 
-    //В зависимости от типа преобразовали данные в strClass
-    $data1 = parse($type1, $stringData1);
-    $data2 = parse($type2, $stringData2);
-
-    //Получаем абстрактное дерево различий
+    $data1 = parse($type1, $rawData1);
+    $data2 = parse($type2, $rawData2);
     $diffTree = findDiff($data1, $data2);
 
-    //Вызываем render формирующий по дереву текстовое представление
-    //Достраиваем структуру добавляя ключ корня дерева
     return format(
         [
             'type' => 'root',
@@ -38,22 +32,19 @@ function genDiff(string $file1, string $file2, string $format = 'stylish'): stri
 /**
  * @throws Exception
  */
-function parseFile(string $file): array
+function getFileData(string $path): array
 {
-    if (!file_exists($file)) {
-        throw new Exception("Invalid file path: {$file}");
+    if (!file_exists($path)) {
+        throw new Exception("Invalid file path: {$path}");
     }
-    //Определяем тип данных по его расширению
-    $type = pathinfo($file)['extension'] ?? '';
-    $data = file_get_contents($file);
+
+    $type = pathinfo($path)['extension'] ?? '';
+    $data = file_get_contents($path);
     return ['type' => $type, 'data' => $data];
 }
 
-//теперь построитель отличий возвращает массив абстракций с изменениями данных
 function findDiff(object $file1, object $file2): array
 {
-    //Получили массив уникальных ключей путем преобразования объектов с данными
-    //в массив и его слияния
     $uniqueKeys = array_unique(
         array_merge(
             array_keys(get_object_vars($file1)),
@@ -61,23 +52,18 @@ function findDiff(object $file1, object $file2): array
         )
     );
 
-    //сделали не мутабельную сортировку данных
-    $sortedArray = sort(
+    $sortedKeys = sort(
         $uniqueKeys,
         function ($first, $second) {
             return $first <=> $second;
         }
     );
 
-    //Обходим массив $sortedArray, В $key индексы 0,1,2...
-    //По $key извлекаем из stdObject значения для сравнения
     $res = array_map(
         function (string $key) use ($file1, $file2) {
             $value1 = $file1->$key ?? null;
             $value2 = $file2->$key ?? null;
 
-            //Сравниваем значения
-            //Если во втором файле нет такого свойства
             if (!property_exists($file2, $key)) {
                 return [
                     'key' => $key,
@@ -86,7 +72,6 @@ function findDiff(object $file1, object $file2): array
                 ];
             }
 
-            //Если в первом файле нет такого свойства
             if (!property_exists($file1, $key)) {
                 return [
                     'key' => $key,
@@ -95,9 +80,7 @@ function findDiff(object $file1, object $file2): array
                 ];
             }
 
-            //В случает если вместо данных подструктура-объект, делам рекурсивный вызов
             if (is_object($value1) && is_object($value2)) {
-                // Формируем children ноду рекусивно
                 return [
                     'key' => $key,
                     'type' => 'nested',
@@ -105,7 +88,6 @@ function findDiff(object $file1, object $file2): array
                 ];
             }
 
-            //Помечаем что данные изменились
             if ($value1 !== $value2) {
                 return [
                     'key' => $key,
@@ -115,14 +97,13 @@ function findDiff(object $file1, object $file2): array
                 ];
             }
 
-            //Все совпало и данные без изменений
             return [
                 'key' => $key,
                 'type' => 'unchanged',
                 'value' => $value1,
             ];
         },
-        $sortedArray
+        $sortedKeys
     );
 
     return $res;

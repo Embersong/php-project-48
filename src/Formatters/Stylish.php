@@ -11,7 +11,6 @@ function render(array $tree): string
     return iter($tree);
 }
 
-//рекурсивное преобразование каждой ноды массива абстрактных различий в текстовое представление в Stylish
 function iter(array $node, int $depth = 1): string
 {
     $children = get($node, 'children');
